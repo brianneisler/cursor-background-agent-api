@@ -16,17 +16,25 @@ A TypeScript-based API client that provides programmatic access to Cursor's Back
 
 ## Installation
 
+### NPM Package (Recommended)
+
 ```bash
-npm install -g cursor-api-client
+npm install cursor-api-client
 ```
 
-Or clone and build locally:
+### GitHub Installation
 
 ```bash
 git clone https://github.com/mjdierkes/cursor-background-agent-api.git
 cd cursor-background-agent-api
 npm install
 npm run build
+```
+
+### Global CLI Installation
+
+```bash
+npm install -g cursor-api-client
 ```
 
 ## Setup
@@ -100,6 +108,70 @@ cursor-api settings      # Get user settings
 - `--token, -T` - Override session token
 - `--help, -h` - Show help
 
+## Library Usage
+
+### Basic Usage
+
+```typescript
+import { CursorAPIClient } from 'cursor-api-client';
+
+const client = new CursorAPIClient('your-session-token');
+
+// Create background composer
+const result = await client.createBackgroundComposer({
+  taskDescription: 'Add user authentication',
+  repositoryUrl: 'https://github.com/user/repo.git',
+  branch: 'main',
+  model: 'claude-4-sonnet-thinking'
+});
+
+// List composers
+const composers = await client.listComposers();
+
+// Get settings
+const settings = await client.getUserSettings();
+```
+
+### Environment Token Usage
+
+```typescript
+import { CursorAPIClient } from 'cursor-api-client';
+
+// Uses CURSOR_SESSION_TOKEN environment variable
+const client = new CursorAPIClient();
+
+// Your API calls here...
+```
+
+### Available Types
+
+```typescript
+import { 
+  CursorAPIClient,
+  BackgroundComposer,
+  CreateBackgroundComposerOptions,
+  UserSettingsResponse,
+  WebAccessResponse 
+} from 'cursor-api-client';
+```
+
+### Error Handling
+
+```typescript
+import { CursorAPIClient } from 'cursor-api-client';
+
+const client = new CursorAPIClient('your-token');
+
+try {
+  const result = await client.createBackgroundComposer({
+    taskDescription: 'Your task',
+    repositoryUrl: 'https://github.com/user/repo.git'
+  });
+  console.log('Success:', result);
+} catch (error) {
+  console.error('Error:', error.message);
+}
+```
 
 ## GitHub Workflow Integration
 
@@ -161,28 +233,6 @@ npm run build
 
 # Start MCP server in development
 npm run mcp-server:dev
-```
-
-## API Client Usage
-
-```typescript
-import { CursorAPIClient } from 'cursor-api-client';
-
-const client = new CursorAPIClient('your-session-token');
-
-// Create background composer
-const result = await client.createBackgroundComposer({
-  taskDescription: 'Add user authentication',
-  repositoryUrl: 'https://github.com/user/repo.git',
-  branch: 'main',
-  model: 'claude-4-sonnet-thinking'
-});
-
-// List composers
-const composers = await client.listComposers();
-
-// Get settings
-const settings = await client.getUserSettings();
 ```
 
 ## License

@@ -28,9 +28,12 @@ function getSessionToken(): string {
   throw new Error('Session token not found. Set CURSOR_SESSION_TOKEN environment variable or provide cookies.json');
 }
 
+// Make sessionToken a getter so it's evaluated lazily
 export const config: Config = {
   baseUrl: process.env.CURSOR_BASE_URL || 'https://cursor.com',
-  sessionToken: getSessionToken(),
+  get sessionToken() {
+    return getSessionToken();
+  },
   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
   timeout: parseInt(process.env.REQUEST_TIMEOUT || '30000', 10),
   maxRetries: parseInt(process.env.MAX_RETRIES || '3', 10),
