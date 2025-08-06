@@ -11,7 +11,9 @@ import {
   OpenPrResponse,
   PauseComposerResponse,
   RevertFileResponse,
-  AttachBackgroundComposerResponse
+  AttachBackgroundComposerResponse,
+  AddFollowupMessageOptions,
+  AddFollowupMessageResponse
 } from '../types/index.js';
 
 export class ComposerService extends BaseService {
@@ -100,4 +102,17 @@ export class ComposerService extends BaseService {
       data: { bcId: composerId }
     });
   }
-} 
+
+  async addFollowupMessage(options: AddFollowupMessageOptions): Promise<AddFollowupMessageResponse> {
+    return this.request<AddFollowupMessageResponse>({
+      url: endpoints.backgroundComposer.addFollowupMessage,
+      method: 'POST',
+      data: {
+        bcId: options.bcId,
+        synchronous: options.synchronous,
+        followupMessage: options.followupMessage,
+        followupSource: options.followupSource
+      }
+    });
+  }
+}   

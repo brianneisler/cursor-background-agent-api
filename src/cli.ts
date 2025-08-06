@@ -13,6 +13,7 @@ interface Arguments {
   composerId?: string;
   taskDescription?: string;
   repositoryUrl?: string;
+  message?: string;
   format: 'json' | 'table' | 'raw';
   verbose: boolean;
   port?: number;
@@ -138,6 +139,19 @@ async function runCommand(args: Arguments) {
         break;
       }
         
+      case 'followup': {
+        if (!args.composerId) {
+          throw new Error('Composer ID is required for followup command');
+        }
+        if (!args.message) {
+          throw new Error('Message is required for followup command');
+        }
+        
+        const result = await client.addFollowupMessage(args.composerId, args.message);
+        printParsedResponse(result, args.format);
+        break;
+      }
+        
       case 'mcp-server': {
         const port = args.port || 3001;
         logger.info(`Starting MCP server on port ${port}...`);
@@ -195,6 +209,21 @@ const argv = yargs(hideBin(process.argv))
         demandOption: true
       });
   })
+  .command('followup', 'Send a followup message to an existing background composer', (yargs) => {
+    return yargs
+      .option('composer-id', {
+        alias: 'id',
+        describe: 'Background Composer ID',
+        type: 'string',
+        demandOption: true
+      })
+      .option('message', {
+        alias: 'm',
+        describe: 'Followup message text',
+        type: 'string',
+        demandOption: true
+      });
+  })
   .command('mcp-server', 'Start MCP server', (yargs) => {
     return yargs
       .option('port', {
@@ -232,4 +261,4 @@ if (argv.verbose) {
 }
 
 // Run the command
-runCommand(argv); 
+runCommand(argv);  

@@ -75,4 +75,20 @@ export interface CreateBackgroundComposerResponse {
     source: string;
   };
   wasSwappedToDefault?: boolean;
-} 
+}
+
+export interface FollowupMessage {
+  text: string;
+  type: 'MESSAGE_TYPE_HUMAN';
+}
+
+export interface AddFollowupMessageOptions {
+  bcId: string;
+  synchronous: boolean;
+  followupMessage: FollowupMessage;
+  followupSource: 'BACKGROUND_COMPOSER_SOURCE_WEBSITE';
+}
+
+export interface AddFollowupMessageResponse {
+  success: boolean;
+}   
