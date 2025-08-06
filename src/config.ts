@@ -55,9 +55,10 @@ export const endpoints = {
     pause: '/api/background-composer/pause',
     revertFile: '/api/background-composer/revert-file',
     attachBackgroundComposer: '/api/background-composer/attach-background-composer',
-    attachBackgroundComposerLogs: '/api/background-composer/attach-background-composer-logs'
+    attachBackgroundComposerLogs: '/api/background-composer/attach-background-composer-logs',
+    addFollowupMessage: '/api/auth/addAsyncFollowupBackgroundComposer'
   },
   dashboard: {
     privacyMode: '/api/dashboard/get-user-privacy-mode'
   }
-} as const; 
+} as const;  

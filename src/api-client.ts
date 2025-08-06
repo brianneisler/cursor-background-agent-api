@@ -15,7 +15,9 @@ import {
   OpenPrResponse,
   PauseComposerResponse,
   RevertFileResponse,
-  AttachBackgroundComposerResponse
+  AttachBackgroundComposerResponse,
+  AddFollowupMessageOptions,
+  AddFollowupMessageResponse
 } from './types/index.js';
 import {
   parseComposerList,
@@ -94,6 +96,20 @@ export class CursorAPIClient {
   async attachBackgroundComposerLogs(composerId: string): Promise<AttachBackgroundComposerResponse> {
     logger.info('Attaching background composer logs...');
     return this.composerService.attachLogs(composerId);
+  }
+
+  async addFollowupMessage(bcId: string, message: string): Promise<AddFollowupMessageResponse> {
+    logger.info('Adding followup message to background composer...');
+    const options: AddFollowupMessageOptions = {
+      bcId,
+      synchronous: true,
+      followupMessage: {
+        text: message,
+        type: 'MESSAGE_TYPE_HUMAN'
+      },
+      followupSource: 'BACKGROUND_COMPOSER_SOURCE_WEBSITE'
+    };
+    return this.composerService.addFollowupMessage(options);
   }
 
   // User methods - delegate to UserService
@@ -179,4 +195,4 @@ export class CursorAPIClient {
       };
     }
   }
-} 
+}  
