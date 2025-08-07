@@ -1,6 +1,7 @@
 import { BaseService } from './base-service.js';
 import { endpoints } from '../config.js';
 import { buildComposerPayload } from '../utils/payload-builder.js';
+import { logger } from '../utils/logger.js';
 import {
   BackgroundComposer,
   CreateBackgroundComposerOptions,
@@ -104,15 +105,23 @@ export class ComposerService extends BaseService {
   }
 
   async addFollowupMessage(options: AddFollowupMessageOptions): Promise<AddFollowupMessageResponse> {
-    return this.request<AddFollowupMessageResponse>({
-      url: endpoints.backgroundComposer.addFollowupMessage,
-      method: 'POST',
-      data: {
+    try {
+      return this.request<AddFollowupMessageResponse>({
+        url: endpoints.backgroundComposer.addFollowupMessage,
+        method: 'POST',
+        data: {
+          bcId: options.bcId,
+          synchronous: options.synchronous,
+          followupMessage: options.followupMessage,
+          followupSource: options.followupSource
+        }
+      });
+    } catch (error) {
+      logger.error(`Failed to add followup message for bcId: ${options.bcId}`, { 
         bcId: options.bcId,
-        synchronous: options.synchronous,
-        followupMessage: options.followupMessage,
-        followupSource: options.followupSource
-      }
-    });
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+      throw error;
+    }
   }
-}   
+}            

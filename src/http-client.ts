@@ -73,10 +73,11 @@ export class HttpClient {
       logger.error(message, { 
         status, 
         url: requestConfig.url, 
-        method: requestConfig.method 
+        method: requestConfig.method,
+        responseData: axiosError.response?.data ? JSON.stringify(axiosError.response.data) : undefined
       });
       
       throw new ApiError(message, status, axiosError.response?.data);
     }
   }
-} 
+}  
