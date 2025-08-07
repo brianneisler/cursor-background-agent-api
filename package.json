@@ -30,6 +30,7 @@
     "mcp-server": "tsx src/cli.ts mcp-server",
     "mcp-server:dev": "tsx src/cli.ts mcp-server --verbose",
     "test": "vitest --run",
+    "test:unit": "vitest --run src/__tests__/unit",
     "test:watch": "vitest",
     "lint": "eslint src/**/*.ts",
     "prepublishOnly": "npm run build",
